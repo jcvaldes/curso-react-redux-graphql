@@ -3,11 +3,15 @@ import Card from "../card/Card";
 import styles from "./home.module.css";
 // conecta nuestro componente con redux
 import { connect } from "react-redux";
-
-function Home({chars}) {
+import { removeCharacterAction } from "../../redux/charsDuck";
+function Home({ chars, removeCharacterAction }) {
   function renderCharacter() {
-    let char = chars[0]
-    return <Card {...char}/>;
+    let char = chars[0];
+    return <Card leftClick={nextCharacter} {...char} />;
+  }
+
+  function nextCharacter() {
+    removeCharacterAction();
   }
 
   return (
@@ -23,4 +27,7 @@ function mapStateToProps(state) {
     chars: state.characters.array, // el array traido del state va a vivir en un prop llamado chars
   };
 }
-export default connect(mapStateToProps)(Home);
+
+// connect injecta removeCharacterAction (una accion) como props a home 
+// para que la pueda usar y hacer cambios en el store
+export default connect(mapStateToProps, { removeCharacterAction })(Home);
