@@ -3,7 +3,8 @@
 // compose permite configurar la herramienta de debugging
 // applyMiddleware configura las aplicaciones extra que queremos que tenga nuestro store
 import { createStore, combineReducers, compose, applyMiddleware } from "redux";
-import thunk from "redux-thunk"; // para poder manejar promesas
+// para poder manejar funciones que devuelven otras funciones a las cuales se le injecta el dispatch y getState de redux usamos redux-thunk
+import thunk from "redux-thunk";
 // import userReducer from "./userDuck";
 
 import charsReducer, { getCharactersAction } from "./charsDuck";
