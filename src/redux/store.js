@@ -7,7 +7,7 @@ import thunk from "redux-thunk"; // para poder manejar promesas
 // import userReducer from "./userDuck";
 
 import charsReducer, { getCharactersAction } from "./charsDuck";
-import userReducer from './userDuck'
+import userReducer, { restoreSessionAction } from './userDuck'
 
 // Reducer principal que convina varios reducers
 let rootReducer = combineReducers({
@@ -28,5 +28,7 @@ export default function generateStore() {
 
   // ejecuto la accion para conseguir los personajes por primera vez
   getCharactersAction()(store.dispatch, store.getState);
+
+  restoreSessionAction()(store.dispatch);
   return store;
 }

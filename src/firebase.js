@@ -18,8 +18,12 @@ let firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-export async function loginWithGoogle() {
-  const auth = firebase.auth();
+const auth = firebase.auth();
+export function signOutGoogle() {
+  debugger
+  auth.signOut();
+}
+export function loginWithGoogle() {
   let provider = new GoogleAuthProvider();
   provider.addScope("profile");
   provider.addScope("email");
