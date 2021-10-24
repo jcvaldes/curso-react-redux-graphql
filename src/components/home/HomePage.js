@@ -4,7 +4,7 @@ import styles from "./home.module.css";
 // conecta nuestro componente con redux
 import { connect } from "react-redux";
 import { removeCharacterAction } from "../../redux/charsDuck";
-function Home({ chars, removeCharacterAction }) {
+function HomePage({ chars, removeCharacterAction }) {
   function renderCharacter() {
     let char = chars[0];
     return <Card leftClick={nextCharacter} {...char} />;
@@ -28,6 +28,6 @@ function mapStateToProps(state) {
   };
 }
 
-// connect injecta removeCharacterAction (una accion) como props a home 
+// connect injecta removeCharacterAction (una accion) como props a homePage 
 // para que la pueda usar y hacer cambios en el store
-export default connect(mapStateToProps, { removeCharacterAction })(Home);
+export default connect(mapStateToProps, { removeCharacterAction })(HomePage);

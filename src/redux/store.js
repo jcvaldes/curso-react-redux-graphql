@@ -7,10 +7,11 @@ import thunk from "redux-thunk"; // para poder manejar promesas
 // import userReducer from "./userDuck";
 
 import charsReducer, { getCharactersAction } from "./charsDuck";
+import userReducer from './userDuck'
 
 // Reducer principal que convina varios reducers
 let rootReducer = combineReducers({
-  // user: userReducer,
+  user: userReducer,
   characters: charsReducer,
 });
 

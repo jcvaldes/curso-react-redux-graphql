@@ -12,3 +12,5 @@ https://github.com/zalmoxisus/redux-devtools-extension
 npx create-react-app my-app --template cra-template-pwa
 
 npx create-react-app my-app --template cra-template-pwa-typescript
+
+https://github.com/HectorBlisS/Curso-React-Redux-GraphQL/tree/part2
