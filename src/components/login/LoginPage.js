@@ -4,11 +4,11 @@ import styles from "./login.module.css";
 import { connect } from "react-redux";
 import { doGoogleLoginAction } from "../../redux/userDuck";
 
-function LoginPage({fetching, doGoogleLoginAction}) {
+function LoginPage({ fetching, doGoogleLoginAction }) {
   function doLogin() {
     doGoogleLoginAction();
   }
-  if(fetching) return <h2>Cargando...</h2>
+  if (fetching) return <h2>Cargando...</h2>;
   return (
     <div className={styles.container}>
       <h1>Inicia Sesión con Google</h1>
@@ -20,14 +20,13 @@ function LoginPage({fetching, doGoogleLoginAction}) {
 }
 
 // saca lo que tiene en el state de redux y lo pone en este componente
-function mapStateToProps(state) {
-    console.log(state)
-    return {
-      fetching: state.fetching, // el array traido del state va a vivir en un prop llamado chars
-    };
+function mapStateToProps({ user: { fetching } }) {
+  return {
+    // el array traido del state va a vivir en un prop llamado chars
+    fetching,
+  };
 }
 
-  
-  // connect injecta doGoogleLoginAction (una accion) como props a Login 
-  // para que la pueda usar y hacer cambios en el store
-  export default connect(mapStateToProps, { doGoogleLoginAction })(LoginPage);
+// connect injecta doGoogleLoginAction (una accion) como props a Login
+// para que la pueda usar y hacer cambios en el store
+export default connect(mapStateToProps, { doGoogleLoginAction })(LoginPage);
