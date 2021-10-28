@@ -3,17 +3,23 @@ import Card from "../card/Card";
 import styles from "./home.module.css";
 // conecta nuestro componente con redux
 import { connect } from "react-redux";
-import { removeCharacterAction } from "../../redux/charsDuck";
-function HomePage({ chars, removeCharacterAction }) {
+import {
+  removeCharacterAction,
+  addToFavoriteAction,
+} from "../../redux/charsDuck";
+
+function HomePage({ chars, removeCharacterAction, addToFavoriteAction }) {
   function renderCharacter() {
     let char = chars[0];
-    return <Card leftClick={nextCharacter} {...char} />;
+    return <Card rightClick={addFav} leftClick={nextCharacter} {...char} />;
   }
 
   function nextCharacter() {
     removeCharacterAction();
   }
-
+  function addFav() {
+    addToFavoriteAction();
+  }
   return (
     <div className={styles.container}>
       <h2>Personajes de Rick y Morty</h2>
@@ -28,6 +34,9 @@ function mapStateToProps(state) {
   };
 }
 
-// connect injecta removeCharacterAction (una accion) como props a homePage 
+// connect injecta removeCharacterAction (una accion) como props a homePage
 // para que la pueda usar y hacer cambios en el store
-export default connect(mapStateToProps, { removeCharacterAction })(HomePage);
+export default connect(mapStateToProps, {
+  removeCharacterAction,
+  addToFavoriteAction,
+})(HomePage);

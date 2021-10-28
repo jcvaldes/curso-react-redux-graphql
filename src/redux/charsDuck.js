@@ -4,12 +4,14 @@ let initialData = {
   fetching: false, //para ver si está cargando
   array: [], //array de personajes
   current: {}, // datos del personaje actual
+  favorites: [], //array de personajes favoritos
 };
 let URL = "https://rickandmortyapi.com/api/character";
 
 let GET_CHARACTERS = "GET_CHARACTERS";
 let GET_CHARACTERS_SUCCESS = "GET_CHARACTERS_SUCCESS";
 let GET_CHARACTERS_ERROR = "GET_CHARACTERS_ERROR";
+let ADD_TO_FAVORITES = "ADD_TO_FAVORITES";
 
 // No hago el SUCCESS Y ERROR porque no me comunico con el backend
 let REMOVE_CHARACTER = "REMOVE_CHARACTER";
@@ -17,6 +19,8 @@ let REMOVE_CHARACTER = "REMOVE_CHARACTER";
 // reducer: solo se dedica a una parte del store
 export default function reducer(state = initialData, action) {
   switch (action.type) {
+    case ADD_TO_FAVORITES:
+      return { ...state, ...action.payload };
     case REMOVE_CHARACTER:
       return { ...state, array: action.payload };
     case GET_CHARACTERS:
@@ -57,7 +61,7 @@ export let getCharactersAction = () => (dispatch, getState) => {
 export let removeCharacterAction = () => (dispatch, getState) => {
   // hay quienes prefieren hacer la logica en el reducer y no en el thunk pero es mejor
   // dejar el reducer lo mas limpio posible
-  
+
   // ?? donde estan los characters
   let { array } = getState().characters; // getState obtiene todo el store
   // saco el personaje del array
@@ -66,5 +70,21 @@ export let removeCharacterAction = () => (dispatch, getState) => {
   dispatch({
     type: REMOVE_CHARACTER,
     payload: [...array],
+  });
+};
+
+// agrego a la lista de favoritos
+export let addToFavoriteAction = () => (dispatch, getState) => {
+  // hay quienes prefieren hacer la logica en el reducer y no en el thunk pero es mejor
+  // dejar el reducer lo mas limpio posible
+
+  // ?? donde estan los characters
+  let { array, favorites } = getState().characters; // getState obtiene todo el store
+  // saco el personaje del array
+  let char = array.shift();
+  favorites.push(char);
+  dispatch({
+    type: ADD_TO_FAVORITES,
+    payload: { array: [...array], favorites: [...favorites] },
   });
 };
