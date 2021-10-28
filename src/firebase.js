@@ -18,6 +18,15 @@ let firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
+let db = firebase.firestore().collection("favs");
+export function updateDB(array, uid) {
+  return db.doc(uid).set({ array });
+}
+export function getFavs(uid) {
+  return db.doc(uid).get().then((snap) => {
+    return snap.data().array;
+  });
+}
 const auth = firebase.auth();
 export function signOutGoogle() {
   debugger

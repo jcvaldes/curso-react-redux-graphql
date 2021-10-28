@@ -1,5 +1,6 @@
 // constantes
 import axios from "axios";
+import { getFavs, updateDB } from "../firebase";
 let initialData = {
   fetching: false, //para ver si está cargando
   array: [], //array de personajes
@@ -16,11 +17,21 @@ let ADD_TO_FAVORITES = "ADD_TO_FAVORITES";
 // No hago el SUCCESS Y ERROR porque no me comunico con el backend
 let REMOVE_CHARACTER = "REMOVE_CHARACTER";
 
+let GET_FAVS = "GET_FAVS";
+let GET_FAVS_SUCCESS = "GET_FAVS_SUCCESS";
+let GET_FAVS_ERROR = "GET_FAVS_ERROR";
+
 // reducer: solo se dedica a una parte del store
 export default function reducer(state = initialData, action) {
   switch (action.type) {
     case ADD_TO_FAVORITES:
       return { ...state, ...action.payload };
+    case GET_FAVS:
+      return { ...state, fetching: true };
+    case GET_FAVS_SUCCESS:
+      return { ...state, favorites: action.payload, fetching: false };
+    case GET_FAVS_ERROR:
+      return { ...state, fetching: false, error: action.payload };
     case REMOVE_CHARACTER:
       return { ...state, array: action.payload };
     case GET_CHARACTERS:
@@ -81,10 +92,27 @@ export let addToFavoriteAction = () => (dispatch, getState) => {
   // ?? donde estan los characters
   let { array, favorites } = getState().characters; // getState obtiene todo el store
   // saco el personaje del array
+  let { uid } = getState().user;
   let char = array.shift();
   favorites.push(char);
+
+  // agrego a firebase
+  updateDB(favorites, uid);
   dispatch({
     type: ADD_TO_FAVORITES,
     payload: { array: [...array], favorites: [...favorites] },
   });
+};
+
+export let retrieveFavsAction = () => (dispatch, getState) => {
+  dispatch({ type: GET_FAVS });
+  let { uid } = getState().user;
+  return getFavs(uid)
+    .then((array) => {
+      dispatch({ type: GET_FAVS_SUCCESS, payload: [...array] });
+    })
+    .catch((err) => {
+      console.error(err);
+      dispatch({ type: GET_FAVS_ERROR, payload: err.message });
+    });
 };
